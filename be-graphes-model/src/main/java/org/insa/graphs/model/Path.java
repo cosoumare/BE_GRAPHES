@@ -198,11 +198,22 @@ public class Path {
      * 
      * @return true if the path is valid, false otherwise.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
-        return false;
+        boolean valid=false;
+        if (this.isEmpty() | this.size()==1 ){
+        	valid=true;
+        }else if (getArcs().get(0).getOrigin()==this.getOrigin()) {
+        	for (int i=0 ; i<this.getArcs().size();i++) {
+        		if( getArcs().get(i).getDestination()==getsArcs().get(i).getOrigin(i+1)) {
+        			valid=true;
+        		}
+        	}
+        	
+        }	
+    
+        return valid;
     }
 
     /**
@@ -210,11 +221,15 @@ public class Path {
      * 
      * @return Total length of the path (in meters).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float Longueur=0;
+    	for (int i =0 ; i<this.getArcs().size(); i++) {
+    		Longueur+=this.getArcs().get(i).getLength();
+    	}
+    	
+        return Longueur;
     }
 
     /**
@@ -225,11 +240,11 @@ public class Path {
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+        
+        return ((this.getLength())/(speed/3.6));
     }
 
     /**
@@ -238,11 +253,14 @@ public class Path {
      * 
      * @return Minimum travel time to travel this path (in seconds).
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        float Temps=0;
+    	for (int i =0 ; i<this.getArcs().size(); i++) {
+    		Temps+=this.getArcs().get(i).getMinimumTravelTime();
+    	}
+        return Temps;
     }
 
 }
