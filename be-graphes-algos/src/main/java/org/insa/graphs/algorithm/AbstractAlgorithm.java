@@ -3,7 +3,7 @@ package org.insa.graphs.algorithm;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-
+//commentaire test
 /**
  * Base class for algorithm classes.
  *
