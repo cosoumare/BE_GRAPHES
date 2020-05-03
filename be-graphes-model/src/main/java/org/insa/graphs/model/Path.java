@@ -2,6 +2,7 @@ package org.insa.graphs.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,13 +31,69 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     *  Need to be implemented.
      */
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+    	Path chemin_final;
+    	
+		//liste des arcs que l'on veut obtenir
+        List<Arc> arcs_chemin = new ArrayList<Arc>();
+    	
+		//sauvegarde de l'arc le plus court
+		Arc pluscourt=null;
+		
+		//si les noeuds ne sont pas connectés
+		boolean existe=false; 
+		
+    	//liste de noeuds nulle
+    	if (nodes.size()==0) {
+    		chemin_final= new Path(graph);
+    	//liste de noeuds de taille 1
+    	}else if (nodes.size()==1) {
+    		chemin_final= new Path(graph, nodes.get(0));
+    		
+    	//liste de noeuds quelconque
+    	}else {
+    		
+    		//pointeur sur la liste de noeuds
+    		Iterator<Node> iterateur= nodes.iterator();
+    		Node origine = iterateur.next();
+    		
+    		while (iterateur.hasNext()) {
+    			
+    			//on parcourt la liste des arcs des successeurs du noeud
+                Iterator<Arc> arcs_suivants = origine.getSuccessors().iterator() ;
+                Node destination = iterateur.next();
+                
+                while (arcs_suivants.hasNext()) {
+                	
+                	Arc lien = arcs_suivants.next();
+                	
+                	if (lien.getDestination().equals(destination)) {
+                		
+                		if (pluscourt==null){
+                			pluscourt=lien;
+                			existe=true;	
+                		}else if (lien.getMinimumTravelTime()<pluscourt.getMinimumTravelTime()) {
+                			pluscourt=lien;
+                			
+                		}            		
+                	}                	
+                }
+                
+                if (existe==false) {
+        			throw new IllegalArgumentException("The list of nodes is not valid.");
+                }else {
+                    arcs_chemin.add(pluscourt);
+                    origine=destination;
+                    existe=false;
+                    pluscourt=null;
+                }    
+    		}  
+        	chemin_final= new Path(graph, arcs_chemin);
+    	} 
+        return chemin_final;
     }
 
     /**
@@ -51,13 +108,70 @@ public class Path {
      * @throws IllegalArgumentException If the list of nodes is not valid, i.e. two
      *         consecutive nodes in the list are not connected in the graph.
      * 
-     * @deprecated Need to be implemented.
+     * Need to be implemented.
      */
-    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
-            throws IllegalArgumentException {
-        List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
-        return new Path(graph, arcs);
+    public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes) throws IllegalArgumentException {
+    	
+    	Path chemin_final;
+    	
+		//liste des arcs que l'on veut obtenir
+        List<Arc> arcs_chemin = new ArrayList<Arc>();
+    	
+		//sauvegarde de l'arc le plus court
+		Arc pluscourt=null;
+		
+		//si les noeuds ne sont pas connectés
+		boolean existe=false; 
+		
+    	//liste de noeuds nulle
+    	if (nodes.size()==0) {
+    		chemin_final= new Path(graph);
+    	//liste de noeuds de taille 1
+    	}else if (nodes.size()==1) {
+    		chemin_final= new Path(graph, nodes.get(0));
+    		
+    	//liste de noeuds quelconque
+    	}else {
+    		
+    		//pointeur sur la liste de noeuds
+    		Iterator<Node> iterateur= nodes.iterator();
+    		Node origine = iterateur.next();
+    		
+    		while (iterateur.hasNext()) {
+    			
+    			//on parcourt la liste des arcs des successeurs du noeud
+                Iterator<Arc> arcs_suivants = origine.getSuccessors().iterator() ;
+                Node destination = iterateur.next();
+                
+                while (arcs_suivants.hasNext()) {
+                	
+                	Arc lien = arcs_suivants.next();
+                	
+                	if (lien.getDestination().equals(destination)) {
+                		
+                		if (pluscourt==null){
+                			pluscourt=lien;
+                			existe=true;	
+                		}else if (lien.getLength()<pluscourt.getLength()) {
+                			pluscourt=lien;
+                			
+                		}
+                		
+                	}                	
+                }
+                
+                if (existe==false) {
+        			throw new IllegalArgumentException("The list of nodes is not valid.");
+                }else {
+                    arcs_chemin.add(pluscourt);
+                    origine=destination;
+                    existe=false;
+                    pluscourt=null;
+                }    
+    		}  
+        	chemin_final= new Path(graph, arcs_chemin);
+    	} 
+        return chemin_final;
     }
 
     /**
@@ -200,18 +314,44 @@ public class Path {
      * 
      *  Need to be implemented.
      */
-    public boolean isValid() {
+    /*premier test avec while mais pas d'erreur expliquée par les procédures de test (aucune erreur signalée mais test pas valide)
+     * public boolean isValid() {
         boolean valid=false;
-        if (this.isEmpty() | this.size()==1 ){
+        if ((this.isEmpty()) | (this.size()==1)){
         	valid=true;
-        }else if (getArcs().get(0).getOrigin()==this.getOrigin()) {
-        	for (int i=0 ; i<this.getArcs().size();i++) {
-        		if( getArcs().get(i).getDestination()==getsArcs().get(i).getOrigin(i+1)) {
+        }else if (getArcs().get(0).getOrigin()==this.getOrigin()){
+        	int i=0;
+        	valid=true;
+        	while ((valid==true) && (i<this.size())) {
+        		if( getArcs().get(i).getDestination()==getArcs().get(i+1).getOrigin()) {
         			valid=true;
+        		}else {
+        			valid=false;
         		}
         	}
         	
-        }	
+        }
+    
+        return valid;
+    }*/
+    
+    public boolean isValid() {
+        boolean valid=false;
+        if ((this.isEmpty()) | (this.size()==1)){
+        	valid=true;
+        }else {
+        	if (getArcs().get(0).getOrigin()==this.getOrigin()) {
+            	for (int i=0 ; i<(this.getArcs().size())-1;i++) {
+            		if (getArcs().get(i).getDestination()==getArcs().get(i+1).getOrigin()) {
+            			valid=true;
+            		}else {
+            			valid=false;
+            			break;
+            		}
+            	}        		
+        	}
+        	
+        }
     
         return valid;
     }

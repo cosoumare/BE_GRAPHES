@@ -1,6 +1,7 @@
 package org.insa.graphs.algorithm.utils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Implements a binary heap containing elements of type E.
@@ -137,7 +138,51 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
 
     @Override
     public void remove(E x) throws ElementNotFoundException {
-        // TODO:
+      
+    	if (this.array.isEmpty()) {
+    		throw new ElementNotFoundException(x);
+    	}
+    	if ((this.array.size()==1) && (this.array.get(0)==x)) {
+    		this.array.remove(0);
+    		this.currentSize--;
+    	}else if((this.array.size()==1) && (this.array.get(0)!=x)){
+    		throw new ElementNotFoundException(x);
+    	}
+    	
+    	//on cherche d'abord l'élément que l'on veut retirer
+    	//booleen indiquant si on a trouvé l'élément
+    	boolean trouve=false;
+    	
+    	//iterateur dans l'arraylist du tas
+    	int i=0;
+    	
+    	while ((i<this.currentSize) && (!trouve)) {
+    		
+    		if (this.array.get(i)==x) { 			
+    			trouve=true;
+    		}
+    		i++;
+    	}
+    	
+    	if (!trouve) {
+    		throw new ElementNotFoundException(x);
+    	}else {
+    		
+    		//si on trouve l'élément, on l'échange avec le dernier elem, le supprime puis on réorganise les noeuds
+    		this.array.set(i-1, this.array.get(this.currentSize-1));
+    		this.currentSize--;
+    		
+    		for (int j=0;j<this.currentSize;j++) {
+    			E change=this.array.get(j);
+    			this.percolateDown(j);
+    			if (this.array.get(j)==change) {
+    				this.percolateUp(j);
+    			}
+
+    		}
+    	}   	
+    	
+    	
     }
 
     @Override
