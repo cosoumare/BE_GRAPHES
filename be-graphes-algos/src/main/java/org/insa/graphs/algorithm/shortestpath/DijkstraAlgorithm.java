@@ -56,17 +56,26 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         }
           
         boolean fin=false;
-
+        
        //boucle tant que le sommet de destination n'est pas marqué
-       while ((!(Tas.isEmpty())) && !fin) {   	   
- 
-   		//recherche élément min du tas
+       while ((!(Tas.isEmpty())) && !fin) {   
+    	   
+    	//affiher si le tas est valide
+    	if (Tas.isValid()) {
+    		System.out.println("Le tas est valide!");
+    	}else {
+    	   	System.out.println("Oula le tas est pas valide!");
+    	}
+    	
+   		//recherche élément min du tas et on marque ce sommet
    		Label x = Tas.deleteMin();
-   		//on marque ce sommet
    		x.setMarque(true);
    		nbnoeudmark+=1;
+   		
    		//on prévient que le noeud a été marqué
    		notifyNodeMarked(data.getGraph().get(x.getsommetC()));
+   		
+   		//on vérifie la liste des successeurs du sommet visité
    		System.out.println("on regarde les successeurs du noeud " + x.getsommetC());
    		
    		if (x==Tablab[data.getDestination().getId()]) {
@@ -75,17 +84,13 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
    		}
    		
    		List<Arc> successeurs = data.getGraph().get(x.getsommetC()).getSuccessors();
-   		
+
    		//tests des coûts de tous les arcs successeurs
-   		
-		/*Iterator<Arc> iterateur= successeurs.iterator();
-		Arc arc=iterateur.next();
-		while (iterateur.hasNext()) {*/
-		
+   		//Si pas de successeur
    		if (successeurs.isEmpty()) {
    			System.out.println("pas de successeurs");
-		}
-		
+   		}
+   		   		
 		for (Arc arc: successeurs) {
 			
 			if (!data.isAllowed(arc)) {
@@ -94,9 +99,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			}
 			
 			double coutAct=Tablab[arc.getDestination().getId()].getCost();
-   			System.out.println("cout du noeud "+arc.getDestination().getId()+ " = "+coutAct);
+   			//System.out.println("cout du noeud "+arc.getDestination().getId()+ " = "+coutAct);
 
-			//on cherche le sommet d'arc de length min parmi les sommets non marqués
+			//on vérifie les coûts des arcs pour les sommets non marqués
 			if (!(Tablab[arc.getDestination().getId()].getMarque())){
 				
 				if(coutAct>(x.getCost()+data.getCost(arc))){
@@ -108,13 +113,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					}else {
 						notifyNodeReached(arc.getDestination());
 					}
-		   			System.out.println("on donne un pere au noeud "+arc.getDestination().getId());
+		   			//System.out.println("on donne un pere au noeud "+arc.getDestination().getId());
 					Tablab[arc.getDestination().getId()].setPere(arc);
-					Tas.insert(Tablab[arc.getDestination().getId()]);
-							
+					Tas.insert(Tablab[arc.getDestination().getId()]);					
 				}
 			}
-			//arc=iterateur.next();
 		}
        }
        
@@ -157,9 +160,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
            
            //Vérification longueur du chemin=PCC Dijkstra  
            if (path.getLength()==(float)Tablab[data.getDestination().getId()].getCost()) {
-               System.out.println("Le chemin est bien le plus court!");
+               System.out.println("Le cout du path et le même que le cout du label de destination!");
            }
-           
+                      
            //nombre de noeuds marqués
   			System.out.println("Noeuds marqués: " + nbnoeudmark);
   			
@@ -177,4 +180,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 }
 }
     
+/*Iterator<Arc> iterateur= successeurs.iterator();
+Arc arc=iterateur.next();
+while (iterateur.hasNext()) {
+arc=iterateur.next();*/
+
+
+
 

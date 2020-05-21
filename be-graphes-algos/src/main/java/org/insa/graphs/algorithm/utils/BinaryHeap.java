@@ -246,5 +246,24 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
     public String toString() {
         return BinaryHeapFormatter.toStringTree(this, 8);
     }
+    
+    /* 
+     * méthode isValid permettant de vérifier que le tas est valide
+     * 
+     * */
+    
+    public boolean isValid() {
+    	boolean valide=false;
+    	if (this.isEmpty() || (this.currentSize==1) ) {
+    		valide=true;
+    	}else {
+    		for (int j=0;j<this.currentSize-1;j++) {
+    			if (this.array.get(j).compareTo(this.array.get(j+1))==-1) {
+    				valide=true;
+    			}
+    		}
+    	}
+    	return valide;
+    }
 
 }
