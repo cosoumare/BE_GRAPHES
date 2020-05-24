@@ -42,8 +42,8 @@ public class BFDijkstraAStarComparaisonTest {
 	    Graph graph;
 	    
 		try {
-			//ouverture du graphe correspondant à la carte spécifiée
-            DataInputStream stream= new DataInputStream(new BufferedInputStream(new FileInputStream(chemin_map)));
+			//ouverture du graphe correspondant à la carte spécifiée	
+            DataInputStream stream= new DataInputStream(new BufferedInputStream(new FileInputStream(chemin_map)));   
             GraphReader reader=new BinaryGraphReader(stream);
 	        graph = reader.read();
 	        reader.close();
@@ -54,7 +54,9 @@ public class BFDijkstraAStarComparaisonTest {
 	    }
 	
 		//si on veut une comparaison avec le MODE_LENGHT type==1, et avec le MODE_TIME, type==3
+		
 		ArcInspector arcInspector=ArcInspectorFactory.getAllFilters().get(type);
+		
 		Node org=graph.get(origine);
 		Node destin=graph.get(destination);
 		

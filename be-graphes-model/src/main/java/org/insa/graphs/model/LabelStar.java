@@ -10,10 +10,14 @@ public class LabelStar extends Label {
 		this.coutDest=costDestin;
 	}
 	
-	
+    public void setCostTot(double coutTot) {
+    	this.coutDest=coutTot;
+    }
+    
 	@Override
 	public double getCostTot() {
-		return (this.getCost()+this.coutDest);		
+		return (this.coutDest);		
 	}
 		
+
 }

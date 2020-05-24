@@ -20,7 +20,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     final double inf = Double.POSITIVE_INFINITY;
     
     int nbnoeudmark=0;
-    
+    int nbnoeudvisit=0;
+
     double time;
     
     @Override
@@ -34,20 +35,27 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         final int nbNodes = data.getGraph().size();
 
 
-        //Tableau de labels pour tous les stocker?
+        //Tableau de labels pour tous les stocker
         Label[] Tablab = new Label[nbNodes];
         
-        //Initialisation de notre tas
-        //Tous les coûts valent l'infini sauf celui de l'origine qui vaut 0 
+        /**
+         * 
+         * --------------Initialisation de notre tas-------------------
+         * Tous les coûts valent l'infini sauf celui de l'origine qui vaut 0 
+         * 
+         * */
  
         for (int i =0; i<nbNodes; i++) {
         	if (data.getGraph().get(i).equals(data.getOrigin())) {
+        		
                 // On prévient les observers qu'on a l'origine
                 notifyOriginProcessed(data.getOrigin());
+                
         		Label lab =new Label(i, false, 0, null);
         		lab.setSommetC(data.getGraph().get(i).getId());
         		Tablab[i]=lab;
         		Tas.insert(lab);
+        		
         	}else {
         		Label lab =new Label(i, false, inf, null);
         		lab.setSommetC(data.getGraph().get(i).getId());  
@@ -55,9 +63,14 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	}
         }
           
-        boolean fin=false;
         
-       //boucle tant que le sommet de destination n'est pas marqué
+        /**
+         * -----------------------Itérations-------------------------
+         * boucle tant que le sommet de destination n'est pas marqué
+         */
+        
+       boolean fin=false;
+        
        while ((!(Tas.isEmpty())) && !fin) {   
     	   
     	//affiher si le tas est valide
@@ -105,17 +118,22 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 			if (!(Tablab[arc.getDestination().getId()].getMarque())){
 				
 				if(coutAct>(x.getCost()+data.getCost(arc))){
+					
 					coutAct=(x.getCost()+data.getCost(arc));
 					Tablab[arc.getDestination().getId()].setCost(coutAct);
+					
 					//Placer y dans le tas (enlever ancien label s'il y était déjà
 					if (Tablab[arc.getDestination().getId()].getPere()!=null) {
-						Tas.remove(Tablab[arc.getDestination().getId()]);
+						Tas.remove(Tablab[arc.getDestination().getId()]);	
+						
 					}else {
 						notifyNodeReached(arc.getDestination());
 					}
+					
 		   			//System.out.println("on donne un pere au noeud "+arc.getDestination().getId());
 					Tablab[arc.getDestination().getId()].setPere(arc);
 					Tas.insert(Tablab[arc.getDestination().getId()]);					
+					nbnoeudvisit++;		
 				}
 			}
 		}
@@ -165,6 +183,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                       
            //nombre de noeuds marqués
   			System.out.println("Noeuds marqués: " + nbnoeudmark);
+  			
+            //nombre de noeuds visités
+   			System.out.println("Noeuds visités: " + nbnoeudvisit);
   			
   			//Durée du PCC 
   			time=path.getMinimumTravelTime();

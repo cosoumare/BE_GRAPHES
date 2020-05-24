@@ -23,6 +23,7 @@ public class Label implements Comparable<Label>{
 		this.pere=padre;		
 	}
 	
+	@Override
     public int compareTo(Label other) {
         return Double.compare(getCostTot(), other.getCostTot());
     }
