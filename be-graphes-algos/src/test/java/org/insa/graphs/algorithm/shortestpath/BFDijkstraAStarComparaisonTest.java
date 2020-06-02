@@ -3,6 +3,7 @@
 package org.insa.graphs.algorithm.shortestpath;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -88,10 +89,13 @@ public class BFDijkstraAStarComparaisonTest {
 			return path;
 	}
 	
+	
 
+	
 	@Test
 	public void testOracle() {
 		
+		//cas de path vide testé dans le cas sans oracle, ici surtout vérification de l'optimalité de la solution
 		//PREMIERS TESTS AVEC ORACLE (BellmanFord)
 		//Test1: carte Haute-Garonne, comparaison en taille
 	
@@ -113,12 +117,52 @@ public class BFDijkstraAStarComparaisonTest {
 		Path pathA2=initPath("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\haute-garonne.mapgr",10991,63104, 2, "AlgoA");
 		
 		//comparaison BellmanFord-Dijkstra
-		assertEquals(pathB2.getMinimumTravelTime(), pathD2.getMinimumTravelTime(), 1e-6);
+		assertEquals(pathB2.getMinimumTravelTime(), pathD2.getMinimumTravelTime(), 1e-6);	
 		//comparaison BellmanFord-AStar
 		assertEquals(pathB2.getMinimumTravelTime(), pathA2.getMinimumTravelTime(),1e-6);
 		//comparaison Dijkstra-AStar 
 		assertEquals(pathD2.getMinimumTravelTime(), pathA2.getMinimumTravelTime(), 1e-6);
+	
 	}
 	
+	public void testSansOracleInit(String chemin_map, int origine, int destination, String Algo) {
+		
+		//cas de path vide
+		Path emptyPath=initPath(chemin_map, origine, destination, 1, Algo);
+		if (emptyPath==null) {
+	        assertEquals(emptyPath, null);
+		}else {		
+		//On initialise un path d'un mode et on vérifie que le résultat de ce mode est cohérent 
+		Path path0=initPath(chemin_map, origine, destination, 0, Algo);		
+		Path path1=initPath(chemin_map, origine, destination, 1, Algo);
+		Path path2=initPath(chemin_map, origine, destination, 2, Algo);
+		Path path3=initPath(chemin_map, origine, destination, 3, Algo);
+
+		assertTrue("ShortestPath optimal", path0.getLength()<=path2.getLength()); //ou égal (cas de certains path d'un noeud)
+		assertTrue("ShortestPath optimal", path1.getLength()<=path3.getLength());
+		assertTrue("FastestPath optimal", path0.getMinimumTravelTime()>=path2.getMinimumTravelTime());
+		assertTrue("FastestPath optimal", path1.getMinimumTravelTime()>=path3.getMinimumTravelTime());
+		}
+		
+	}
+	
+	@Test
+	public void testSansOracle() {
+		
+		//path impossible, path vide carte philippines
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\philippines.mapgr",731863,706554, "AlgoD");
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\philippines.mapgr",731863,706554, "AlgoA");
+		
+		//path d'un noeud carte carré
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\carre.mapgr",13,13, "AlgoD");
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\carre.mapgr",13,13, "AlgoA");		
+		
+		
+		//path insa-bikini carte haute garonne
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\haute-garonne.mapgr",10991,63104, "AlgoD");
+		testSansOracleInit("C:/Users\\coumba\\Documents\\insa\\3A\\Cours\\Graphes\\BE_GRAPHES\\CARTES\\haute-garonne.mapgr",10991,63104, "AlgoA");
+		
+		
+	}
 
 }

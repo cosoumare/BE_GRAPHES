@@ -22,11 +22,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
     int nbnoeudmark=0;
     int nbnoeudvisit=0;
 
-    double time;
+    
+    double timeEx=0;
+    double timedeb=0;
+    double timefin=0;
     
     @Override
     protected ShortestPathSolution doRun() {
-    	
+    
+    	timedeb=System.currentTimeMillis();
+
         final ShortestPathData data = getInputData();
         
           
@@ -187,9 +192,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             //nombre de noeuds visités
    			System.out.println("Noeuds visités: " + nbnoeudvisit);
   			
-  			//Durée du PCC 
-  			time=path.getMinimumTravelTime();
-  			System.out.println("Durée du trajet: " + time);
+  			//Durée du temps d'exécution de l'algorithme
+  			timefin=System.currentTimeMillis();
+  			timeEx=timefin-timedeb;
+  			System.out.println("Temps d'exécution du programme: " + timeEx);
            
            //création de la solution
            solution = new ShortestPathSolution(data, Status.OPTIMAL, path);

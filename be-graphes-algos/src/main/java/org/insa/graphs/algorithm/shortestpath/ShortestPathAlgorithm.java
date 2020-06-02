@@ -16,7 +16,7 @@ public abstract class ShortestPathAlgorithm extends AbstractAlgorithm<ShortestPa
 
     @Override
     protected abstract ShortestPathSolution doRun();
-
+    
     @Override
     public ShortestPathData getInputData() {
         return (ShortestPathData) super.getInputData();

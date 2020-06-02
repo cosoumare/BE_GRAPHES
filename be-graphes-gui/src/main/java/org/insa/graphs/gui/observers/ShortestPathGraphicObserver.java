@@ -15,7 +15,7 @@ public class ShortestPathGraphicObserver implements ShortestPathObserver {
 
     public ShortestPathGraphicObserver(Drawing drawing) {
         this.drawing = drawing;
-        psOverlay1 = drawing.createPointSetOverlay(1, Color.CYAN);
+        psOverlay1 = drawing.createPointSetOverlay(1, Color.RED);
         psOverlay2 = drawing.createPointSetOverlay(1, Color.BLUE);
     }
 
