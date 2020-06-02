@@ -1,3 +1,11 @@
+/*
+ * Implémentation de la classe MeetingPoint relative au problème ouvert
+ * classe pas finalisée car soucis de protection de la classe MainWindows
+ * Ceci donne une première idée non exécutable de l'implémentation voulue de l'algorithme
+ * 
+ */
+
+
 package org.insa.graphs.algorithm.shortestpath;
 
 import java.util.ArrayList;
@@ -215,7 +223,7 @@ public class MeetingPointAlgorithm extends AbstractMettingPointAlgorithm<Shortes
    					}
    				}
    			}
-   			
+   			//ici il faudrait rajouter un calcul des critères en comparant les coûts en temps et en distance depuis les deux origines jusqu'au sommet x
    			if (Tablab2[x.getsommetC()].getMarque2()) {
    				Liste_Milieux.add(data.getGraph().get(x.getsommetC()));
    			}
@@ -270,6 +278,7 @@ public class MeetingPointAlgorithm extends AbstractMettingPointAlgorithm<Shortes
      				}
      			}
      			
+       			//ici il faudrait rajouter un calcul des critères en comparant les coûts en temps et en distance depuis les deux origines jusqu'au sommet x
      			if (Tablab1[x.getsommetC()].getMarque1()) {
      				Liste_Milieux.add(data.getGraph().get(x.getsommetC()));
      			}
